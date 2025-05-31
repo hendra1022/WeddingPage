@@ -1,0 +1,70 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+    height: 100vh; /* Extend height to enable scrolling */
+    overflow-x: hidden;
+    font-family: 'Playfair Display', serif;
+}
+
+.container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Door container should also be sticky */
+.door {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    z-index: 3;
+}
+
+.leftdoor, .rightdoor {
+    width: 50%;
+    height: 100vh;
+}
+
+.leftdoor img, .rightdoor img {
+    width: 100%;
+    height: 100%;
+    object-fit: fill;
+}
+
+.start{
+    position: absolute;
+    z-index: 10;
+    bottom: 10vh;
+    left: calc(50vw - 50px);
+}
+#buttonstart{
+    width: 100px;
+}
+
+.scrollpage{
+    text-align: center;
+}
+
+.logo img{
+    width: 30vw;
+}
+
+.couple-name {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    color: #6b4c35;
+}
+
+.title div{
+    margin: 1rem;
+    opacity: 0;
+}
