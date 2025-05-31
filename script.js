@@ -1,10 +1,5 @@
 gsap.registerPlugin(ScrollTrigger);
 
-gsap.set(".door", {
-    transformStyle: "preserve-3d",
-    perspective: 1000
-});
-
 gsap.set(".logo", { y: -50, opacity: 0 });
 gsap.set(".title-text", { x: 50, opacity: 0 });
 gsap.set(".couple-name", { y: 50, opacity: 0 });
@@ -56,6 +51,12 @@ $(document).on('click', '#buttonstart', function(){
             opacity: 1,
             duration: 1,
             ease: "power2.out",
-        }, "<"); // same time
+        }, "<") // same time
+        .to(".details", {
+            x: 0,
+            opacity: 1,
+            duration: 1,
+            ease: "power2.out",
+        }, "<"); 
 
 })
