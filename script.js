@@ -7,15 +7,15 @@ gsap.set(".date-time", { x: -50, opacity: 0 });
 
 const doorTimeline = gsap.timeline();
 
-$(document).on('click', '#buttonstart', function(){
+$(document).on('click', '#buttonstart', function () {
     $('html, body').height('1000vh');
 
     doorTimeline.to(".leftdoor", {
-            xPercent: -150,
-            duration: 1.5,
-            ease: "linear",
-            transformOrigin: "left center",
-        }, 0)
+        xPercent: -150,
+        duration: 1.5,
+        ease: "linear",
+        transformOrigin: "left center",
+    }, 0)
         .to(".rightdoor", {
             xPercent: 150,
             duration: 1.5,
@@ -51,12 +51,20 @@ $(document).on('click', '#buttonstart', function(){
             opacity: 1,
             duration: 1,
             ease: "power2.out",
-        }, "<") // same time
-        .to(".details", {
+        });
+
+    gsap.fromTo(".details",
+        { x: 50, opacity: 0 },
+        {
             x: 0,
             opacity: 1,
             duration: 1,
             ease: "power2.out",
-        }, "<"); 
-
+            scrollTrigger: {
+                trigger: ".details",
+                start: "top 80%",
+                toggleActions: "play none none none"
+            }
+        }
+    );
 })
