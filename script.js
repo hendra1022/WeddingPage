@@ -1,4 +1,4 @@
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 gsap.set(".logo", { y: -50, opacity: 0 });
 gsap.set(".title-text", { x: 50, opacity: 0 });
@@ -67,4 +67,27 @@ $(document).on('click', '#buttonstart', function () {
             }
         }
     );
+
+    // ScrollTrigger for scrolling down from .title to .slide1
+    ScrollTrigger.create({
+        trigger: '.title',
+        start: 'bottom 90%',
+        end: 'bottom bottom',
+        onLeave: function () {
+            console.log('Scrolling down from title to slide1');
+            gsap.to(window, { duration: 0.5, scrollTo: { y: ".slide1", autoKill: false } });
+        },
+    });
+
+    // ScrollTrigger for scrolling up from .slide1 to .title
+    ScrollTrigger.create({
+        trigger: '.slide1',
+        start: 'top 10%',
+        end: 'bottom bottom',
+        onLeaveBack: function () {
+            console.log('Scrolling up from slide1 to title');
+            gsap.to(window, { duration: 0.5, scrollTo: { y: ".title", autoKill: false } });
+        },
+        markers: true
+    });
 })
