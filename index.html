@@ -3,65 +3,102 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scroll Door Animation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>The Wedding of Yolina & Marko</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <div class="container">
-        <div class="door">
-            <div class="leftdoor">
-                <img src="images/leftdoor2.png">
-            </div>
-            <div class="rightdoor">
-                <img src="images/rightdoor2.png">
-            </div>
-        </div>
-        <div class="start">
-            <button id="buttonstart">Start</button>
-        </div>
-
+        <!-- Mobile frame for the app -->
         <div class="scrollpage">
+            <!-- Second slide with background image -->
+            <div class="slide slide1">
+                <div class="slide1-bg"></div>
+                <div class="sakura-corner">
+                    <img src="images/sakura.png" alt="Sakura Decoration">
+                </div>
+                <div class="slide1-inner">
+                    <svg width="400" height="150" viewBox="0 0 400 150">
+                        <defs>
+                            <path id="curve" d="M 50,150 A 150,100 0 0,1 350,150" />
+                        </defs>
+                        <text fill="white" font-size="28" font-family="'Cinzel Decorative', serif" text-anchor="middle">
+                            <textPath href="#curve" startOffset="50%">
+                            THE WEDDING OF
+                            </textPath>
+                        </text>
+                    </svg>
+                    <div class="slide1-logo">
+                        <img src="images/MY.png" alt="Wedding Logo">
+                    </div>
+                    <div class="slide1-text">
+                        <p>Kepada Yth</p>
+                        <p>Bapak/Ibu/Saudara/i</p>
+                    </div>
+                    <div class="slide1-button">
+                        <button class="open-invitation">Open Invitation</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Title/First slide -->
             <div class="slide title">
                 <div class="logo">
-                    <img src="images/Y_M_2.png">
+                    <img src="images/MY.png" alt="Wedding Logo">
                 </div>
                 <div class="title-text">The Wedding of</div>
                 <div class="couple-name">
-                    Yolina <br>&<br> Marko
+                    Marko <br>&<br> Yolina
                 </div>
                 <div class="date-time">
-                    September, 12<sup>th</sup> 2025
+                    November, 1<sup>st</sup> 2025
                 </div>
             </div>
-            <div class="slide slide1">
-                <div class="slide1-bg">
 
+            <!-- Details slide -->
+            <div class="slide">
+                <div class="details">
+                    <h1>Nama Pengantin</h1>
+                    <p>Tanggal: 12 September 2025</p>
+                    <p>Waktu: 11.00 WIB</p>
+                    <div class="map">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15805.585569605613!2d112.7304133!3d-7.2574713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fbfbe0870495%3A0x3027a76e352bab0!2sSurabaya%2C%20Surabaya%20City%2C%20East%20Java!5e0!3m2!1sen!2sid!4v1712716559995!5m2!1sen!2sid"
+                            width="100%" height="250" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
                 </div>
             </div>
-            <div class="details">
-                <h1>Nama Pengantin</h1>
-                <p>Tanggal: 10 April 2025</p>
-                <p>Waktu: 11.00 WIB</p>
-                <div class="map">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15805.585569605613!2d112.7304133!3d-7.2574713!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fbfbe0870495%3A0x3027a76e352bab0!2sSurabaya%2C%20Surabaya%20City%2C%20East%20Java!5e0!3m2!1sen!2sid!4v1712716559995!5m2!1sen!2sid"
-                        width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy"
-                        referrerpolicy="no-referrer-when-downgrade">
-                    </iframe>
-                </div>
-            </div>      
         </div>
+
+        <!-- Door animation overlay -->
+        <div class="door">
+            <div class="leftdoor">
+                <img src="images/leftdoor2.png" alt="Left Door">
+            </div>
+            <div class="rightdoor">
+                <img src="images/rightdoor2.png" alt="Right Door">
+            </div>
+        </div>
+
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display&display=swap" rel="stylesheet">
-    <script src="script.js"></script>
+    <script src="https://unpkg.com/circletype@2.3.0/dist/circletype.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative&display=swap" rel="stylesheet" />
 
+    <script src="script.js"></script>
 </body>
 
 </html>

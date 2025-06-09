@@ -1,64 +1,138 @@
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
-gsap.set(".logo", { y: -50, opacity: 0 });
-gsap.set(".title-text", { x: 50, opacity: 0 });
-gsap.set(".couple-name", { y: 50, opacity: 0 });
-gsap.set(".date-time", { x: -50, opacity: 0 });
+// Set initial states
+gsap.set(".logo", { y: -30, opacity: 0 });
+gsap.set(".title-text", { x: 30, opacity: 0 });
+gsap.set(".couple-name", { y: 30, opacity: 0 });
+gsap.set(".date-time", { x: -30, opacity: 0 });
 
-const doorTimeline = gsap.timeline();
+// Reset scroll position when page loads
+window.onload = function () {
+    window.scrollTo(0, 0);
 
-$(document).on('click', '#buttonstart', function () {
-    $('html, body').height('1000vh');
+    // Make sure scrolling is disabled initially
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
 
-    doorTimeline.to(".leftdoor", {
-        xPercent: -150,
-        duration: 1.5,
-        ease: "linear",
-        transformOrigin: "left center",
-    }, 0)
-        .to(".rightdoor", {
-            xPercent: 150,
+    // Force the height to be 100vh until after start
+    document.body.style.height = '100vh';
+    document.documentElement.style.height = '100vh';
+
+    // Make sure doors are properly positioned initially
+    gsap.set(".leftdoor", { xPercent: 0 });
+    gsap.set(".rightdoor", { xPercent: 0 });
+
+    // Create a fresh timeline for the door animation
+    const doorTimeline = gsap.timeline({
+        paused: false,
+        onComplete: function () {
+            console.log("Door animation complete");
+        }
+    });
+
+    // Calculate how far doors should go based on screen width
+    const doorOffset = isWiderScreen() ? -150 : -100;
+
+    // Start door opening animation with better control
+    doorTimeline
+        .to(".leftdoor", {
+            xPercent: doorOffset,
             duration: 1.5,
-            ease: "linear",
-            transformOrigin: "right center",
-        }, "<")
+            ease: "power2.inOut",
+            force3D: true, // Force 3D acceleration
+        }, 0)
+        .to(".rightdoor", {
+            xPercent: Math.abs(doorOffset),
+            duration: 1.5,
+            ease: "power2.inOut",
+            force3D: true, // Force 3D acceleration
+        }, 0) // Start at same time
         .to(".start", {
             opacity: 0,
             duration: 0.5,
-            ease: "linear",
-        }, "<")
-        // Fade in with directional movement
+            ease: "power2.out",
+            onComplete: function () {
+                $('.start').css('display', 'none');
+            }
+        }, 0) // Start at same time
+        .to(".door", {
+            opacity: 0,
+            duration: 0.4,
+            delay: 0.9, // Start fading after doors have mostly opened
+            onComplete: function () {
+                // Hide door after fade
+                $('.door').css('display', 'none');
+
+                // Enable scrolling ONLY after door animation completes
+                $('html, body').addClass('scrolling-enabled');
+                $('.container').addClass('scrolling-enabled');
+                $('.scrollpage').addClass('scrolling-enabled');
+
+                // Set the height to auto to allow full content viewing
+                document.body.style.height = 'auto';
+                document.documentElement.style.height = 'auto';
+                document.body.style.overflow = 'auto';
+                document.documentElement.style.overflow = 'auto';
+
+                // Start content animation
+                startContentAnimation();
+
+                // Refresh ScrollTrigger after layout changes
+                ScrollTrigger.refresh();
+            }
+        });
+
+    // Play the timeline
+    doorTimeline.play();
+};
+
+// Determine if we should use wider screen animations
+const isWiderScreen = () => {
+    return window.innerWidth > 430;
+};
+
+// Handle resize to maintain proper layout
+window.addEventListener('resize', function () {
+    ScrollTrigger.refresh();
+});
+
+// Function to animate content after door opening
+function startContentAnimation() {
+    const contentTimeline = gsap.timeline();
+
+    contentTimeline
         .to(".logo", {
             y: 0,
             opacity: 1,
-            duration: 1,
+            duration: 0.8,
             ease: "power2.out",
-        }, ">0.5")
+        })
         .to(".title-text", {
             x: 0,
             opacity: 1,
-            duration: 1,
+            duration: 0.8,
             ease: "power2.out",
-        }, "<") // start at same time as previous
+        }, "<0.1") // Start slightly after logo
         .to(".couple-name", {
             y: 0,
             opacity: 1,
-            duration: 1,
+            duration: 0.8,
             ease: "power2.out",
-        }, "<") // same time
+        }, "<0.1") // Start slightly after title
         .to(".date-time", {
             x: 0,
             opacity: 1,
-            duration: 1,
+            duration: 0.8,
             ease: "power2.out",
-        });
+        }, "<0.1"); // Start slightly after couple name
 
+    // Animation for details section when scrolled into view
     gsap.fromTo(".details",
-        { x: 50, opacity: 0 },
+        { y: 50, opacity: 0 },
         {
-            x: 0,
+            y: 0,
             opacity: 1,
-            duration: 1,
+            duration: 0.8,
             ease: "power2.out",
             scrollTrigger: {
                 trigger: ".details",
@@ -68,26 +142,64 @@ $(document).on('click', '#buttonstart', function () {
         }
     );
 
-    // ScrollTrigger for scrolling down from .title to .slide1
-    ScrollTrigger.create({
-        trigger: '.title',
-        start: 'bottom 90%',
-        end: 'bottom bottom',
-        onLeave: function () {
-            console.log('Scrolling down from title to slide1');
-            gsap.to(window, { duration: 0.5, scrollTo: { y: ".slide1", autoKill: false } });
-        },
-    });
+    // Setup smooth scroll between sections
+    setupSmoothScroll();
+}
 
-    // ScrollTrigger for scrolling up from .slide1 to .title
-    ScrollTrigger.create({
-        trigger: '.slide1',
-        start: 'top 10%',
-        end: 'bottom bottom',
-        onLeaveBack: function () {
-            console.log('Scrolling up from slide1 to title');
-            gsap.to(window, { duration: 0.5, scrollTo: { y: ".title", autoKill: false } });
-        },
-        markers: true
+// Function to setup smooth scroll between sections
+function setupSmoothScroll() {
+    const slides = gsap.utils.toArray(".slide");
+    let isScrolling = false;
+
+    slides.forEach((panel, i) => {
+        if (i < slides.length - 1) {
+            // ScrollTrigger for scrolling DOWN
+            ScrollTrigger.create({
+                trigger: panel,
+                start: "bottom bottom",
+                onEnter: function () {
+                    if (!isScrolling) {
+                        isScrolling = true;
+                        gsap.to(window, {
+                            duration: 0.5,
+                            scrollTo: { y: panel.nextElementSibling, offsetY: 0 },
+                            ease: "power2.inOut",
+                            onComplete: function () {
+                                isScrolling = false;
+                            }.bind(this)
+                        });
+                    }
+                }
+            });
+        }
+
+        if (i > 0) {
+            // ScrollTrigger for scrolling UP
+            ScrollTrigger.create({
+                trigger: panel,
+                start: "top 10%",
+                onLeaveBack: function () {
+                    if (!isScrolling) {
+                        isScrolling = true;
+                        gsap.to(window, {
+                            duration: 0.5,
+                            scrollTo: { y: panel.previousElementSibling, offsetY: 0 },
+                            ease: "power2.inOut",
+                            onComplete: function () {
+                                isScrolling = false;
+                            }
+                        });
+                    }
+                }
+            });
+        }
     });
-})
+}
+
+$(document).on('click', '.open-invitation', function () {
+    gsap.to(window, {
+        duration: 0.8,
+        scrollTo: { y: ".title", offsetY: 0 },
+        ease: "power2.inOut"
+    });
+});
