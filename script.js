@@ -199,7 +199,7 @@ function setupSmoothScroll() {
 $(document).on('click', '.open-invitation', function () {
     gsap.to(window, {
         duration: 0.8,
-        scrollTo: { y: ".title", offsetY: 0 },
+        scrollTo: { y: ".slide2", offsetY: 0 },
         ease: "power2.inOut"
     });
 });
