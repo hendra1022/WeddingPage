@@ -161,7 +161,7 @@ function setupSmoothScroll() {
                     if (!isScrolling) {
                         isScrolling = true;
                         gsap.to(window, {
-                            duration: 0.5,
+                            duration: 0.2,
                             scrollTo: { y: panel.nextElementSibling, offsetY: 0 },
                             ease: "power2.inOut",
                             onComplete: function () {
@@ -182,7 +182,7 @@ function setupSmoothScroll() {
                     if (!isScrolling) {
                         isScrolling = true;
                         gsap.to(window, {
-                            duration: 0.5,
+                            duration: 0.2,
                             scrollTo: { y: panel.previousElementSibling, offsetY: 0 },
                             ease: "power2.inOut",
                             onComplete: function () {

@@ -115,6 +115,11 @@ html {
     background: var(--accent-color);
 }
 
+.vr{
+    border-left:2px solid #333;
+    height:100%;
+}
+
 .slide {
     min-height: 100vh;
     height: 100vh;
@@ -245,6 +250,24 @@ html {
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
 }
 
+.open-map {
+    background-color: white;
+    color: var(--main-color);
+    border: none;
+    border-radius: 30px;
+    padding: 5px 10px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.open-map:hover {
+    background-color: rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.25);
+}
+
 .logo img {
     width: 150px;
     max-width: 100%;
@@ -255,7 +278,7 @@ html {
     color: #333;
 }
 
-.couple-name {
+.great-vibes-text {
     font-family: 'Great Vibes', cursive !important;
     font-size: 3rem;
     color: var(--main-color);
@@ -362,6 +385,114 @@ html {
 .slide5 img{
     width: 100%;
     max-width: var(--mobile-max-width);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.slide6 {
+    height: 100vh;
+    min-height: 100vh;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-bg-color);
+    gap: 0.75rem;
+    font-size: 0.75rem;
+}
+
+.slide6 div {
+    margin: 0;
+    /* opacity: 0; */
+    color: var(--main-color);
+    font-family: 'Noticia Text', serif;
+}
+
+.slide6 hr {
+  border: none;
+  height: 2px;
+  color: #333;
+  background-color: #333;
+}
+
+.slide6 .great-vibes-text{
+    font-size: 2.4rem;
+    padding: 0;
+}
+
+.slide6-title-text{
+    font-weight: bold;
+}
+
+.slide6 img{
+    width: 100%;
+    max-width: 100px;
+    border-radius: 12px;
+    margin: 1rem;
+    overflow: hidden;
+}
+
+.event-details {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.event-column {
+    width: 48%;
+    text-align: center;
+    margin: 0;
+}
+
+.slide7 {
+    height: 200vh;
+    min-height: 200vh;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-bg-color);
+    gap: 1rem;
+}
+
+.slide7 div {
+    margin: 0.5rem 0;
+    /* opacity: 0; */
+    color: var(--main-color);
+    font-family: 'Noticia Text', serif;
+}
+.slide7 img{
+    width: 100%;
+    max-width: var(--mobile-max-width);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.slide8 {
+    height: 100vh;
+    min-height: 100vh;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-bg-color);
+    gap: 1rem;
+}
+
+.slide8 div {
+    margin: 0.5rem 0;
+    /* opacity: 0; */
+    color: var(--main-color);
+    font-family: 'Noticia Text', serif;
+}
+.slide8 img{
+    width: 100%;
+    max-width: 300px;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -617,4 +748,47 @@ html {
     100% {
         background-position: 0% 50%;
     }
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: none;
+    z-index: 9999;
+}
+
+/* Modal Box */
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    width: clamp(300px, 80vw, var(--slide-width, 600px)); /* fallback width */
+    max-width: 95%;
+    box-sizing: border-box;
+}
+
+/* Close (×) Button */
+.close-button {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #555;
+    cursor: pointer;
+}
+
+/* Show Modal */
+.modal.active {
+    display: block;
 }
