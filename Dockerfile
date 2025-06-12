@@ -1,11 +1,15 @@
-# Use official Nginx image
-FROM nginx:alpine
+FROM php:8.2-apache
 
-# Remove the default Nginx website
-RUN rm -rf /usr/share/nginx/html/*
+# Enable Apache mod_rewrite (for future PHP routing)
+RUN a2enmod rewrite
 
-# Copy your static files to Nginx's HTML directory
-COPY . /usr/share/nginx/html
+# Copy your HTML, CSS, JS, PHP files into /var/www/html
+COPY . /var/www/html
 
-# Expose port 80
-EXPOSE 80
+# Expose port for Cloud Run
+EXPOSE 8080
+
+# Let Apache run on port 8080 for Cloud Run
+RUN sed -i 's/80/8080/g' /etc/apache2/ports.conf /etc/apache2/sites-available/000-default.conf
+
+CMD ["apache2-foreground"]
