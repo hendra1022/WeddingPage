@@ -7,35 +7,36 @@ on:
 
 jobs:
   deploy:
-    name: Build & Deploy to Cloud Run
+    name: Build & Deploy
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repo
-      uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-    - name: Set up Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        project_id: tensile-oarlock-461809-u3
-        service_account_key: ${{ secrets.GCP_SA_KEY }}
-        export_default_credentials: true
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: tensile-oarlock-461809-u3
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
 
-    - name: Configure Docker for Artifact Registry
-      run: gcloud auth configure-docker asia-east1-docker.pkg.dev
+      - name: Authenticate Docker to Artifact Registry
+        run: |
+          gcloud auth configure-docker asia-east1-docker.pkg.dev
 
-    - name: Build Docker image
-      run: |
-        docker build -t asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest .
+      - name: Build Docker image
+        run: |
+          docker build -t asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest .
 
-    - name: Push to Artifact Registry
-      run: |
-        docker push asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest
+      - name: Push Docker image
+        run: |
+          docker push asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest
 
-    - name: Deploy to Cloud Run
-      run: |
-        gcloud run deploy yoliwedding \
-          --image asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest \
-          --platform managed \
-          --region asia-east1 \
-          --allow-unauthenticated
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy yoliwedding \
+            --image asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest \
+            --platform managed \
+            --region asia-east1 \
+            --allow-unauthenticated
