@@ -3,40 +3,38 @@ name: Deploy to Cloud Run
 on:
   push:
     branches:
-      - main
+      - main  # or whichever branch you want to auto-deploy
+
+permissions:
+  contents: 'read'
+  id-token: 'write'  # Required for Workload Identity Federation
 
 jobs:
   deploy:
-    name: Build & Deploy
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v1
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          project_id: tensile-oarlock-461809-u3
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
+          workload_identity_provider: ${{ secrets.GOOGLE_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GOOGLE_SERVICE_ACCOUNT }}
 
-      - name: Authenticate Docker to Artifact Registry
-        run: |
-          gcloud auth configure-docker asia-east1-docker.pkg.dev
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v3
 
-      - name: Build Docker image
-        run: |
-          docker build -t asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest .
-
-      - name: Push Docker image
-        run: |
-          docker push asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest
 
       - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy yoliwedding \
-            --image asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest \
-            --platform managed \
-            --region asia-east1 \
-            --allow-unauthenticated
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          service: yoliwedding
+          region: asia-east1
+          image: asia-east1-docker.pkg.dev/tensile-oarlock-461809-u3/yoli-repo/yoliwedding:latest
