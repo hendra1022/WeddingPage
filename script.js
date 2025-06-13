@@ -159,7 +159,8 @@ $(document).on('click', '.open-invitation', function () {
     ScrollTrigger.refresh();
 });
 
-function pauseScrolling(duration = 100) {
+function pauseScrolling(duration = 200) {
+    ScrollInProgress = true;
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     document.body.style.touchAction = 'none';
@@ -168,5 +169,6 @@ function pauseScrolling(duration = 100) {
         document.body.style.overflow = 'auto';
         document.documentElement.style.overflow = 'auto';
         document.body.style.touchAction = 'auto';
+        ScrollInProgress = false;
     }, duration);
 }
