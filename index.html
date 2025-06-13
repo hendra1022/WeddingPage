@@ -204,11 +204,16 @@
                 <div class="slide7-footer-text">
                     <p>Our Love Story</p>
                     <br><br>
-                    <p>It all began in 2012, when two young hearts met in middle school. A connection was formed, a bond that time could not break. Life took us on different paths, but fate had its own plans.</p>
+                    <p>It all began in 2012, when two young hearts met in middle school. A connection was formed, a bond
+                        that time could not break. Life took us on different paths, but fate had its own plans.</p>
                     <br><br>
-                    <p>Years passed, yet the memories remained. In 2024, our paths intertwined once again, as if destiny had been patiently waiting for us to find our way back to each other. On May 13, Marko asked Yolina to be his forever, and she said yes, This time, we knew-it was always meant to be.</p>
+                    <p>Years passed, yet the memories remained. In 2024, our paths intertwined once again, as if destiny
+                        had been patiently waiting for us to find our way back to each other. On May 13, Marko asked
+                        Yolina to be his forever, and she said yes, This time, we knew-it was always meant to be.</p>
                     <br><br>
-                    <p>From childhood sweethearts to lifelong partners, our journey has led us here, to a new beginning. With hearts full of love and gratitude, we invite you to witness the next chapter of our story as we say “I do” on May 13, 2024.</p>
+                    <p>From childhood sweethearts to lifelong partners, our journey has led us here, to a new beginning.
+                        With hearts full of love and gratitude, we invite you to witness the next chapter of our story
+                        as we say “I do” on May 13, 2024.</p>
                     <br><br>
                     <p>Marko & Yolina</p>
                 </div>
@@ -226,19 +231,15 @@
 
                     <div class="thumbnail-slider-wrapper">
                         <button onclick="scrollThumbs(-1)" class="nav-btn">‹</button>
-                        <div class="thumbnails" id="thumbnailCarousel"></div>
+                        <div class="thumbnails-viewport">
+                            <div class="thumbnails-track" id="thumbnailCarousel"></div>
+                        </div>
                         <button onclick="scrollThumbs(1)" class="nav-btn">›</button>
                     </div>
                 </div>
             </div>
-            
-            <style>
-                .carousel-container {
-                    max-width: 600px;
-                    margin: auto;
-                    text-align: center;
-                }
 
+            <style>
                 .thumbnail-slider-wrapper {
                     display: flex;
                     align-items: center;
@@ -246,22 +247,19 @@
                     gap: 5px;
                 }
 
-                .nav-btn {
-                    font-size: 1.5rem;
-                    padding: 0 10px;
-                    cursor: pointer;
-                    border: none;
-                    background: none;
-                }
-
-                .thumbnails {
-                    display: flex;
+                .thumbnails-viewport {
                     overflow: hidden;
-                    width: 480px; /* 3 thumbnails x 160px */
-                    scroll-behavior: smooth;
+                    width: 480px;
+                    height: 100px;
+                    position: relative;
                 }
 
-                .thumbnails img {
+                .thumbnails-track {
+                    display: flex;
+                    transition: transform 0.5s ease-in-out;
+                }
+
+                .thumbnails-track img {
                     width: 160px;
                     height: 100px;
                     object-fit: cover;
@@ -269,70 +267,16 @@
                     cursor: pointer;
                     border-radius: 6px;
                     opacity: 0.6;
-                    transition: opacity 0.3s;
+                    transition: opacity 0.3s, transform 0.3s;
                     flex-shrink: 0;
                 }
 
-                .thumbnails img.active {
+                .thumbnails-track img.active {
                     opacity: 1;
                     border: 2px solid #007bff;
+                    transform: scale(1.05);
                 }
-                </style>
-
-            <script>
-                const images = [
-                    "images/9.png",
-                    "images/10.png",
-                    "images/11.png",
-                    "images/12.png",
-                ];
-
-                const preview = document.getElementById("preview");
-                const thumbnailCarousel = document.getElementById("thumbnailCarousel");
-                let currentIndex = 0;
-                const visibleCount = 3;
-                let thumbPage = 0;
-
-                // Populate thumbnails
-                images.forEach((src, index) => {
-                    const img = document.createElement("img");
-                    img.src = src.replace("600x300", "160x100");
-                    img.onclick = () => setImage(index);
-                    thumbnailCarousel.appendChild(img);
-                });
-
-                const thumbs = thumbnailCarousel.querySelectorAll("img");
-
-                function setImage(index) {
-                    currentIndex = index;
-                    preview.src = images[index];
-                    thumbs.forEach((img, i) => {
-                    img.classList.toggle("active", i === index);
-                    });
-                }
-
-                function scrollThumbs(direction) {
-                    const pageCount = Math.ceil(images.length / visibleCount);
-                    thumbPage = (thumbPage + direction + pageCount) % pageCount;
-                    const scrollX = thumbPage * (160 + 10) * visibleCount;
-                    thumbnailCarousel.scrollTo({ left: scrollX, behavior: "smooth" });
-                }
-
-                // Auto-slide every 10s
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % images.length;
-                    setImage(currentIndex);
-
-                    // Also update thumbPage if needed
-                    thumbPage = Math.floor(currentIndex / visibleCount);
-                    scrollThumbs(0); // re-align to the new page
-                }, 5000);
-
-                // Init
-                setImage(0);
-                scrollThumbs(0);
-            </script>
-
+            </style>
             <div id="modalHM" class="modal">
                 <div class="modal-content">
                     <button class="close-button" onclick="closeModalHM()">×</button>
@@ -398,6 +342,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://unpkg.com/circletype@2.3.0/dist/circletype.min.js"></script>
 

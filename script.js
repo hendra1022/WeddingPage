@@ -27,9 +27,6 @@ window.onload = function () {
     // Create a fresh timeline for the door animation
     const doorTimeline = gsap.timeline({
         paused: false,
-        onComplete: function () {
-            console.log("Door animation complete");
-        }
     });
 
     // Calculate how far doors should go based on screen width
@@ -79,7 +76,7 @@ function setupSmoothScroll() {
     let isScrolling = false;
 
     slides.forEach((panel, i) => {
-        if(i== 0) {
+        if (i == 0) {
             return; // Skip the first panel as it has no previous panel
         }
         if (i < slides.length - 1) {
@@ -102,7 +99,6 @@ function setupSmoothScroll() {
                     }
                 }
             });
-            console.log(`ScrollTrigger created for panel ${i}`);
         }
 
         if (i > 0) {
@@ -125,7 +121,6 @@ function setupSmoothScroll() {
                     }
                 }
             });
-            console.log(`ScrollTrigger created for panel ${i}`);
         }
     });
 }
@@ -172,3 +167,86 @@ function pauseScrolling(duration = 200) {
         ScrollInProgress = false;
     }, duration);
 }
+
+//carrousel
+const images = [
+    "images/9.png",
+    "images/10.png",
+    "images/11.png",
+    "images/12.png",
+];
+
+const preview = document.getElementById("preview");
+const thumbnailCarousel = document.getElementById("thumbnailCarousel");
+
+const visibleCount = 3;
+let currentIndex = 0;
+let autoScrollInterval;
+
+function renderThumbnails(centerIndex) {
+    thumbnailCarousel.innerHTML = "";
+
+    for (let i = -1; i <= visibleCount-1; i++) {
+        const idx = (centerIndex + i + images.length) % images.length;
+        const thumb = document.createElement("img");
+        thumb.src = images[idx];
+        if (i === 1) thumb.classList.add("active");
+
+        if (i === 0) {
+            thumb.onclick = () => {
+                prevImage();
+                restartAutoScroll();
+            };
+        } else if (i === 2) {
+            thumb.onclick = () => {
+                nextImage();
+                restartAutoScroll();
+            };
+        }
+
+        thumbnailCarousel.appendChild(thumb);
+    }
+
+    // Slide to center (1 thumbnail to the left)
+    thumbnailCarousel.style.transform = `translateX(-170px)`;
+}
+
+function setImage(index) {
+    currentIndex = index % images.length;
+    preview.src = images[currentIndex];
+}
+
+function nextImage() {
+    // Animate left slide
+    thumbnailCarousel.style.transition = "transform 0.5s ease-in-out";
+    thumbnailCarousel.style.transform = `translateX(-340px)`;
+
+    setTimeout(() => {
+        thumbnailCarousel.style.transition = "none";
+        currentIndex = (currentIndex + 1) % images.length;
+        renderThumbnails(currentIndex - 1);
+        setImage(currentIndex);
+    }, 500);
+}
+
+function prevImage() {
+    // Animate right slide
+    thumbnailCarousel.style.transition = "transform 0.5s ease-in-out";
+    thumbnailCarousel.style.transform = `translateX(0px)`;
+
+    setTimeout(() => {
+        thumbnailCarousel.style.transition = "none";
+        currentIndex = (currentIndex - 1 + images.length) % images.length;
+        renderThumbnails(currentIndex - 1);
+        setImage(currentIndex);
+    }, 500);
+}
+
+function restartAutoScroll() {
+    clearInterval(autoScrollInterval);
+    autoScrollInterval = setInterval(nextImage, 5000);
+}
+
+// Init
+setImage(0);
+autoScrollInterval = setInterval(nextImage, 5000);
