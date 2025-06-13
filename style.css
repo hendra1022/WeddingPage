@@ -537,8 +537,8 @@ html {
 
 /* Enable scrolling class - applied after button click */
 .scrolling-enabled {
-    height: auto !important;
-    overflow-y: auto !important;
+    height: auto;
+    overflow-y: auto;
 }
 
 .sakura-corner {
